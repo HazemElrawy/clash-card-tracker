@@ -18,6 +18,8 @@ export const Route = createFileRoute("/settings")({
         property: "og:description",
         content: "Rename accounts, reset data, export and import your card collection backups.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: SettingsPage,
