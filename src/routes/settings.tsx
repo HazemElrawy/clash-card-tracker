@@ -93,23 +93,6 @@ function SettingsPage() {
               Export data
             </button>
             <button
-              onClick={() => fileRef.current?.click()}
-              className="text-game border-panel-edge bg-secondary rounded-lg border-2 px-4 py-2 text-sm text-foreground"
-            >
-              Import data
-            </button>
-            <input
-              ref={fileRef}
-              type="file"
-              accept="application/json"
-              className="hidden"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) void importFile(f);
-                e.target.value = "";
-              }}
-            />
-            <button
               onClick={() => {
                 if (confirm("Erase all data for all 5 accounts?")) {
                   t.resetAll();
@@ -123,7 +106,8 @@ function SettingsPage() {
           </div>
           {status && <p className="text-ink text-sm font-bold">{status}</p>}
           <p className="text-ink/70 text-xs font-bold">
-            Data is stored locally in this browser and saves instantly on every change.
+            Data is stored locally in this browser and saves instantly on every change. To fill in a
+            collection, upload phone screenshots per account on the Collection page.
           </p>
         </div>
       </EventPanel>

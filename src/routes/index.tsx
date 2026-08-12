@@ -62,6 +62,13 @@ function CollectionPage() {
             ))}
           </div>
         </div>
+
+        <ScreenshotImport
+          data={t.data}
+          onApply={(accountId, cards) =>
+            cards.forEach((c) => t.setQuantity(accountId, c.card_id, c.quantity))
+          }
+        />
       </EventPanel>
     </main>
   );
