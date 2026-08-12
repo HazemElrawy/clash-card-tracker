@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { AccountBar } from "@/components/event-chrome";
 import { EventPanel } from "@/components/event-panel";
 import { totalProgress, useTracker, type AccountId } from "@/lib/store";
@@ -25,7 +25,6 @@ export const Route = createFileRoute("/settings")({
 
 function SettingsPage() {
   const t = useTracker();
-  const fileRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState("");
 
   const exportData = () => {
@@ -39,14 +38,6 @@ function SettingsPage() {
     setStatus("Exported backup file.");
   };
 
-  const importFile = async (file: File) => {
-    try {
-      t.importData(JSON.parse(await file.text()));
-      setStatus("Import complete.");
-    } catch {
-      setStatus("Import failed — that file is not valid tracker JSON.");
-    }
-  };
 
   return (
     <main className="min-h-screen px-3 py-5 sm:px-6">
@@ -93,23 +84,6 @@ function SettingsPage() {
               Export data
             </button>
             <button
-              onClick={() => fileRef.current?.click()}
-              className="text-game border-panel-edge bg-secondary rounded-lg border-2 px-4 py-2 text-sm text-foreground"
-            >
-              Import data
-            </button>
-            <input
-              ref={fileRef}
-              type="file"
-              accept="application/json"
-              className="hidden"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) void importFile(f);
-                e.target.value = "";
-              }}
-            />
-            <button
               onClick={() => {
                 if (confirm("Erase all data for all 5 accounts?")) {
                   t.resetAll();
@@ -123,7 +97,8 @@ function SettingsPage() {
           </div>
           {status && <p className="text-ink text-sm font-bold">{status}</p>}
           <p className="text-ink/70 text-xs font-bold">
-            Data is stored locally in this browser and saves instantly on every change.
+            Data is stored locally in this browser and saves instantly on every change. To fill in a
+            collection, upload phone screenshots per account on the Collection page.
           </p>
         </div>
       </EventPanel>

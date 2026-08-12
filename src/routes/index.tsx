@@ -3,6 +3,7 @@ import { useState } from "react";
 import { AccountBar, CategoryTabs } from "@/components/event-chrome";
 import { CardTile } from "@/components/card-tile";
 import { EventPanel, ProgressFooter } from "@/components/event-panel";
+import { ScreenshotImport } from "@/components/screenshot-import";
 import { CATEGORIES, cardsByCategory, type CategoryId } from "@/lib/cards";
 import { qtyOf, totalProgress, useTracker } from "@/lib/store";
 
@@ -61,6 +62,13 @@ function CollectionPage() {
             ))}
           </div>
         </div>
+
+        <ScreenshotImport
+          data={t.data}
+          onApply={(accountId, cards) =>
+            cards.forEach((c) => t.setQuantity(accountId, c.card_id, c.quantity))
+          }
+        />
       </EventPanel>
     </main>
   );
