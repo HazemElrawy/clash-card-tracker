@@ -20,6 +20,8 @@ export const Route = createFileRoute("/compare")({
         property: "og:description",
         content: "Card-by-card ownership across all five accounts, with missing-account lists.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: ComparePage,
