@@ -51,7 +51,7 @@ export const CARDS: Card[] = [
     "Electro Titan",
     "Root Rider",
     "Thrower",
-    "Furnace",
+    "Meteor Golem",
   ]),
   ...mk("dark", [
     "Minion",
@@ -65,8 +65,8 @@ export const CARDS: Card[] = [
     "Headhunter",
     "Apprentice Warden",
     "Druid",
-    "Poison Lizard",
-    "Skeleton Barrel",
+    "Furnace",
+    "Ruin Witch",
   ]),
   ...mk("builder", [
     "Raged Barbarian",

@@ -13,12 +13,12 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Track your Clash of Cards event collection across 5 Clash of Clans accounts: owned cards, duplicates and progress.",
+          "Track your Clash of Cards event collection across your Clash of Clans accounts: owned cards, duplicates and progress.",
       },
       { property: "og:title", content: "Clash of Cards Tracker — Collection" },
       {
         property: "og:description",
-        content: "Track event cards and duplicates across 5 Clash of Clans accounts.",
+        content: "Track event cards and duplicates across all your Clash of Clans accounts.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -29,18 +29,23 @@ export const Route = createFileRoute("/")({
 
 function CollectionPage() {
   const t = useTracker();
-  const account = t.data.accounts.find((a) => a.account_id === t.selected)!;
+  const account = t.data.accounts.find((a) => a.account_id === t.selected) ?? t.data.accounts[0]!;
   const total = totalProgress(t.data, t.selected);
 
   return (
     <main className="min-h-screen px-3 py-5 sm:px-6">
       <div className="mx-auto mb-4 w-full max-w-6xl">
-        <AccountBar data={t.data} selected={t.selected} onSelect={t.setSelected} />
+        <AccountBar
+          data={t.data}
+          selected={t.selected}
+          onSelect={t.setSelected}
+          onAddAccount={() => t.addAccount()}
+        />
       </div>
 
       <EventPanel
         title="Clash of Cards"
-        subtitle={`Collecting as ${account.name} — all ${CARDS.length} cards`}
+        subtitle={`Collecting as ${account?.name ?? "Account"} — all ${CARDS.length} cards`}
         footer={<ProgressFooter owned={total.owned} total={total.total} />}
       >
         <CategoryTabs data={t.data} accountId={t.selected} />

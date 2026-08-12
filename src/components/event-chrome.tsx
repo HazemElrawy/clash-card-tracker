@@ -36,14 +36,16 @@ export function AccountBar({
   data,
   selected,
   onSelect,
+  onAddAccount,
 }: {
   data: AppData;
   selected: AccountId;
   onSelect: (id: AccountId) => void;
+  onAddAccount?: () => void;
 }) {
   return (
     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 sm:flex sm:flex-wrap sm:justify-between">
-      <div className="flex min-w-0 flex-wrap gap-2">
+      <div className="flex min-w-0 flex-wrap items-center gap-2">
         {data.accounts.map((a) => (
           <button
             key={a.account_id}
@@ -52,12 +54,21 @@ export function AccountBar({
               "text-game max-w-[10rem] truncate rounded-lg border-2 px-3 py-1.5 text-sm transition-transform active:translate-y-0.5",
               selected === a.account_id
                 ? "border-gold-deep bg-gold text-ink"
-                : "border-panel-edge bg-secondary text-foreground hover:brightness-110",
+                : "border-panel-edge bg-secondary text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.9)] hover:brightness-110",
             )}
           >
             {a.name}
           </button>
         ))}
+        {onAddAccount && (
+          <button
+            onClick={onAddAccount}
+            title="Add new account"
+            className="text-game rounded-lg border-2 border-dashed border-gold-deep bg-gold/30 px-3 py-1.5 text-sm text-foreground hover:bg-gold/50 transition-colors"
+          >
+            + Add
+          </button>
+        )}
       </div>
       <TopNav />
     </div>
