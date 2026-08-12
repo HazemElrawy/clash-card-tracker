@@ -25,7 +25,6 @@ export const Route = createFileRoute("/settings")({
 
 function SettingsPage() {
   const t = useTracker();
-  const fileRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState("");
 
   const exportData = () => {
@@ -39,14 +38,6 @@ function SettingsPage() {
     setStatus("Exported backup file.");
   };
 
-  const importFile = async (file: File) => {
-    try {
-      t.importData(JSON.parse(await file.text()));
-      setStatus("Import complete.");
-    } catch {
-      setStatus("Import failed — that file is not valid tracker JSON.");
-    }
-  };
 
   return (
     <main className="min-h-screen px-3 py-5 sm:px-6">
