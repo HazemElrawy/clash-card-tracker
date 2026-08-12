@@ -1,10 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import { AccountBar, CategoryTabs } from "@/components/event-chrome";
 import { CardTile } from "@/components/card-tile";
 import { EventPanel, ProgressFooter } from "@/components/event-panel";
 import { ScreenshotImport } from "@/components/screenshot-import";
-import { CATEGORIES, cardsByCategory, type CategoryId } from "@/lib/cards";
+import { CATEGORIES, CARDS } from "@/lib/cards";
 import { qtyOf, totalProgress, useTracker } from "@/lib/store";
 
 export const Route = createFileRoute("/")({
@@ -28,7 +27,6 @@ export const Route = createFileRoute("/")({
 
 function CollectionPage() {
   const t = useTracker();
-  const [cat, setCat] = useState<CategoryId>("elixir");
   const account = t.data.accounts.find((a) => a.account_id === t.selected)!;
   const total = totalProgress(t.data, t.selected);
 
@@ -40,27 +38,30 @@ function CollectionPage() {
 
       <EventPanel
         title="Clash of Cards"
-        subtitle={`Collecting as ${account.name} — ${CATEGORIES.find((c) => c.id === cat)!.name}`}
+        subtitle={`Collecting as ${account.name} — all ${CARDS.length} cards`}
         footer={<ProgressFooter owned={total.owned} total={total.total} />}
       >
-        <CategoryTabs
-          data={t.data}
-          accountId={t.selected}
-          active={cat}
-          onChange={setCat}
-        />
+        <CategoryTabs data={t.data} accountId={t.selected} />
 
-        <div className="bg-parchment border-panel-edge mt-3 rounded-xl border-[3px] p-3">
-          <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 md:grid-cols-6">
-            {cardsByCategory(cat).map((card) => (
-              <CardTile
-                key={card.card_id}
-                card={card}
-                quantity={qtyOf(t.data, t.selected, card.card_id)}
-                onChange={(q) => t.setQuantity(t.selected, card.card_id, q)}
-              />
-            ))}
-          </div>
+        <div className="mt-3 flex flex-col gap-4">
+          {CATEGORIES.map((cat) => (
+            <section
+              key={cat.id}
+              className="bg-parchment border-panel-edge rounded-xl border-[3px] p-3"
+            >
+              <h2 className="text-game text-ink mb-2 text-lg sm:text-xl">{cat.name}</h2>
+              <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 md:grid-cols-6">
+                {CARDS.filter((c) => c.category === cat.id).map((card) => (
+                  <CardTile
+                    key={card.card_id}
+                    card={card}
+                    quantity={qtyOf(t.data, t.selected, card.card_id)}
+                    onChange={(q) => t.setQuantity(t.selected, card.card_id, q)}
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
 
         <ScreenshotImport
