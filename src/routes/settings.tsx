@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { AccountBar } from "@/components/event-chrome";
 import { EventPanel } from "@/components/event-panel";
 import { totalProgress, useTracker, type AccountId } from "@/lib/store";
