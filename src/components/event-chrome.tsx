@@ -79,26 +79,17 @@ export function CategoryTabs({
 }: {
   data: AppData;
   accountId: string;
-  active: CategoryId;
-  onChange: (id: CategoryId) => void;
+  active?: CategoryId;
+  onChange?: (id: CategoryId) => void;
 }) {
   return (
     <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
       {CATEGORIES.map((cat) => {
         const { owned, total } = categoryProgress(data, accountId, cat.id);
         const pct = Math.round((owned / total) * 100);
-        return (
-          <button
-            key={cat.id}
-            onClick={() => onChange(cat.id)}
-            className={cn(
-              "rounded-xl border-[3px] px-3 pt-1.5 pb-2 text-center transition",
-              CAT_BG[cat.id],
-              active === cat.id
-                ? "border-gold scale-[1.02] brightness-110"
-                : "border-panel-edge opacity-80 hover:opacity-100",
-            )}
-          >
+        const isActive = active === cat.id;
+        const body = (
+          <>
             <div className="text-game truncate text-sm text-foreground sm:text-base">
               {cat.name}
             </div>
@@ -111,7 +102,23 @@ export function CategoryTabs({
                 {owned}/{total}
               </span>
             </div>
+          </>
+        );
+        const classes = cn(
+          "rounded-xl border-[3px] px-3 pt-1.5 pb-2 text-center transition",
+          CAT_BG[cat.id],
+          isActive
+            ? "border-gold scale-[1.02] brightness-110"
+            : "border-panel-edge opacity-80 hover:opacity-100",
+        );
+        return onChange ? (
+          <button key={cat.id} onClick={() => onChange(cat.id)} className={classes}>
+            {body}
           </button>
+        ) : (
+          <div key={cat.id} className={classes}>
+            {body}
+          </div>
         );
       })}
     </div>
